@@ -43,6 +43,7 @@ export const deleteOrderFromDb = async (orderId) => {
         return err
     }
 }
+
 export const updateOrderFromDb = async (orderId, title, desc, need, price, userID) => {
     try {
         const db = await mysql.createConnection({host : 'localhost', user : 'root', password : 'root', database : 'schema'})
