@@ -14,9 +14,10 @@ export const createUser = async (req, res) => {
     const {name, age, city} = req.body
     try {
        const user = await createUserFromDb(name, age, city)
-        res.send(user)
+        res.send('User created!')
     } catch (err) {
-        return err
+         res.send(err)
     }
  }
+
 
