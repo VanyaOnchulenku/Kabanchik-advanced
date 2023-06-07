@@ -1,10 +1,18 @@
-const express = require('express')
+import express from 'express'
+import { getUsers, createUser } from './users/userController.js'
 
 const app = express()
 
-const mysql = require('mysql2')
-
 app.use(express.json())
+
+
+
+
+
+app.get('/users', getUsers)
+app.post('/user', createUser)
+
+
 
 
 
