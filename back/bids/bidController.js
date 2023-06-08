@@ -1,4 +1,4 @@
-import { getBidsfromDb, getBidsByIdfromDb, createBidFromDb, updateBidFromDb, deleteBidFromDb, acceptBidFromDb, rejectBidFromDb, getAcceptedUsersBidsfromDb, getRejectedUsersBidsfromDb, getPendingUsersBidsfromDb } from "./bidServices.js";
+import { getBidsfromDb, getBidsByIdfromDb, createBidFromDb, updateBidFromDb, deleteBidFromDb, acceptBidFromDb, rejectBidFromDb, getAcceptedUsersBidsfromDb, getRejectedUsersBidsfromDb, getPendingUsersBidsfromDb, getBidsByOrderIdfromDb } from "./bidServices.js";
 
 export const getBids = async (req, res) => {
     try {
@@ -19,10 +19,20 @@ export const getBidsById = async (req, res) => {
     }
 }
 
+export const getBidsByOrderId = async (req, res) => {
+    const orderId = req.params.id
+    try {
+        const bids = await getBidsByOrderIdfromDb(orderId)
+        res.send(bids)
+    } catch(err) {
+        res.send(err)
+    }
+}
+
 export const createBid = async (req, res) => {
     const {message, price, userID, orderID} = req.body
     try {
-        const order = await createBidFromDb(message, price, userID, orderID)
+        const bid = await createBidFromDb(message, price, userID, orderID)
         res.send('Bid succesfully created!')
     } catch(err) {
         res.send(err)
@@ -33,8 +43,8 @@ export const updateBid = async (req, res) => {
     const bidId = req.params.id
     const {message, price, userId, orderId} = req.body
     try { 
-        const order = await updateBidFromDb(message, price, userId, orderId, bidId)
-        res.send('Your bid succesfully updated!')
+        const bid = await updateBidFromDb(bidId, message, price, userId, orderId)
+        res.send(bid)
     } catch(err) {
         res.send(err)
     }
@@ -43,7 +53,7 @@ export const updateBid = async (req, res) => {
 export const deleteBid = async (req, res) => {
     const bidId = req.params.id
     try {
-        const order = await deleteBidFromDb
+        const bid = await deleteBidFromDb(bidId)
         res.send('Your bid succesfully deleted!')
 
     } catch (err) {
@@ -54,7 +64,7 @@ export const deleteBid = async (req, res) => {
 export const acceptBid = async (req, res) => {
     const bidId = req.params.id
     try { 
-        const order = await acceptBidFromDb(bidId)
+        const bid = await acceptBidFromDb(bidId)
         res.send('Your bid succesfully accepted!')
     } catch(err) {
         res.send(err)
@@ -64,7 +74,7 @@ export const acceptBid = async (req, res) => {
 export const rejectBid = async (req, res) => {
     const bidId = req.params.id
     try { 
-        const order = await rejectBidFromDb(bidId)
+        const bid = await rejectBidFromDb(bidId)
         res.send('Your bid succesfully rejected!')
     } catch(err) {
         res.send(err)
