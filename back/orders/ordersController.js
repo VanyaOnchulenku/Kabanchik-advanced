@@ -1,4 +1,5 @@
 import { getOrdersFromDb, getAllOrdersByUserIdFromDb, createOrderFromDb, updateOrderFromDb, deleteOrderFromDb } from "./orderServices.js"
+import { orderSchema } from "../validator.js"
 
 export const getOrders = async (req, res) =>  {
     try {
@@ -20,13 +21,18 @@ export const getAllOrdersByUserId = async (req, res) => {
  }
 
 export const createOrder = async (req, res) => {
-    const {title, desc, need, price, userID} = req.body
-    try {
-        const order = await createOrderFromDb(title, desc, need, price, userID)
-        res.send('Order succesfully created!')
-    } catch(err) {
-        res.send(err)
+    const {error, value} = orderSchema(req.body)
+    if(error) {
+        res.json(error.details)
+    } else {
+        const {title, desc, need, price, userID} = req.body
+        try {
+            const order = await createOrderFromDb(title, desc, need, price, userID)
+            res.send('Order succesfully created!')
+        } catch(err) {
+            res.send(err)
     }
+  }
 }
 
 export const deleteOrder = async (req, res) => {
@@ -40,6 +46,10 @@ export const deleteOrder = async (req, res) => {
 }
 
 export const updateOrder = async (req, res) => {
+    const {error, value} = orderSchema(req.body)
+    if(error) {
+        res.json(error.details)
+    } else {
     const orderId = req.params.id
     const {title, desc, need, price, userID} = req.body
     try { 
@@ -48,5 +58,5 @@ export const updateOrder = async (req, res) => {
     } catch(err) {
         res.send(err)
     }
-
+   }
 }

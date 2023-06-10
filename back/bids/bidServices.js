@@ -34,12 +34,12 @@ export const getBidsByOrderIdfromDb = async (orderId) => {
 }
 
 export const createBidFromDb = async (message, price, userId, orderId) => {
-    try{
+     try {
         const db = await mysql.createConnection({host : 'localhost', user : 'root', password : 'root', database : 'schema'})
         const [rows] = await db.execute('INSERT INTO bids (message, price, userID, orderID) VALUES (?, ?, ?, ?) ',[message, price, userId, orderId])
         db.end()
         return rows
-        } catch(err) {
+     } catch(err) {
         return err
         }
 }

@@ -1,3 +1,4 @@
+import { bidSchema } from "../validator.js";
 import { getBidsfromDb, getBidsByIdfromDb, createBidFromDb, updateBidFromDb, deleteBidFromDb, acceptBidFromDb, rejectBidFromDb, getAcceptedUsersBidsfromDb, getRejectedUsersBidsfromDb, getPendingUsersBidsfromDb, getBidsByOrderIdfromDb } from "./bidServices.js";
 
 export const getBids = async (req, res) => {
@@ -30,6 +31,10 @@ export const getBidsByOrderId = async (req, res) => {
 }
 
 export const createBid = async (req, res) => {
+    const {error, value} = bidSchema(req.body)
+    if(error) {
+        res.send(error.details)
+    } else {
     const {message, price, userID, orderID} = req.body
     try {
         const bid = await createBidFromDb(message, price, userID, orderID)
@@ -37,9 +42,14 @@ export const createBid = async (req, res) => {
     } catch(err) {
         res.send(err)
     }
+  }
 }
 
 export const updateBid = async (req, res) => {
+    const {error, value} = bidSchema(req.body)
+    if(error) {
+        res.send(error.details)
+    } else {
     const bidId = req.params.id
     const {message, price, userId, orderId} = req.body
     try { 
@@ -48,6 +58,7 @@ export const updateBid = async (req, res) => {
     } catch(err) {
         res.send(err)
     }
+   }
 }
 
 export const deleteBid = async (req, res) => {

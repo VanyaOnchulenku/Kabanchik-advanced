@@ -1,18 +1,5 @@
 {
   "dependencies": {
-    "express": "^4.18.2",
-    "mysql2": "^3.3.3",
-    "nodemon": "^2.0.22"
-  },
-  "name": "hundredish",
-  "version": "1.0.0",
-  "main": "index.js",
-  "devDependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
-  },
-  "author": "",
-  "license": "ISC",
-  "description": ""
+    "joi": "^17.9.2"
+  }
 }

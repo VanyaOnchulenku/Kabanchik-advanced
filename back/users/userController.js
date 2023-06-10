@@ -1,4 +1,5 @@
 import {getUsersFromDb, createUserFromDb} from './userServices.js'
+import { userSchema } from '../validator.js'
 
 
  export async function getUsers(req, res) {
@@ -11,6 +12,11 @@ import {getUsersFromDb, createUserFromDb} from './userServices.js'
 }
 
 export const createUser = async (req, res) => {
+
+    const {error, value} = userSchema(req.body)
+    if(error) {
+        res.send(error.details) 
+    } else {
     const {name, age, city} = req.body
     try {
        const user = await createUserFromDb(name, age, city)
@@ -18,6 +24,7 @@ export const createUser = async (req, res) => {
     } catch (err) {
          res.send(err)
     }
+  }
  }
 
 
