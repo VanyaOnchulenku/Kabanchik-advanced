@@ -3,17 +3,13 @@ import { createResponseAboutClientFromDb, createResponseAboutExecutorFromDb, get
 
 
 export const getResponsesAboutClients = async (req, res) => {
-
-        const response = await getResponsesAboutClientsfromDb()
-        res.send(response)
-
+    const response = await getResponsesAboutClientsfromDb()
+    res.send(response)
 }
 
 export const getResponsesAboutExecutors = async (req, res) => {
-
-        const response = await getResponsesAboutExecutorsfromDb ()
-        res.send(response)
-
+    const response = await getResponsesAboutExecutorsfromDb ()
+    res.send(response)
 }
 
 export const createResponseAboutClient = async (req, res) => {
@@ -21,21 +17,19 @@ export const createResponseAboutClient = async (req, res) => {
     if(error) {
         res.send(error.details)
     } else {
-    const {executorId, text, clientId, mark} = req.body
+        const {executorId, text, clientId, mark} = req.body
         const response = await createResponseAboutClientFromDb (executorId, text, clientId, mark)
         res.send('Thanks a lot for your response')
-
    }
 }
 
 export const createResponseAboutExecutor = async (req, res) => {
     const {error, value} = responseAboutExecutorSchema(req.body)
-      if(error) {
+    if(error) {
         res.send(error.details)
     } else {
         const {clientId, text, executorId, mark} = req.body
-            const response = await createResponseAboutExecutorFromDb (clientId, text, executorId, mark)
-            res.send('Thanks a lot for your response')
-  
+        const response = await createResponseAboutExecutorFromDb (clientId, text, executorId, mark)
+        res.send('Thanks a lot for your response')
     }
 }
