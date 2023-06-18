@@ -2,22 +2,15 @@ import { getOrdersFromDb, getAllOrdersByUserIdFromDb, createOrderFromDb, updateO
 import { orderSchema } from "../validator.js"
 
 export const getOrders = async (req, res) =>  {
-    try {
         const orders = await getOrdersFromDb()
         res.send(orders)
-    } catch(err) {
-        res.send(err)
-    }
 }
 
 export const getAllOrdersByUserId = async (req, res) => {
     const userId = req.params.id
-    try{
         const orders = await getAllOrdersByUserIdFromDb(userId)
         res.send(orders)
-    } catch(err) {
-        res.send(err)
-    }
+    
  }
 
 export const createOrder = async (req, res) => {
@@ -26,22 +19,19 @@ export const createOrder = async (req, res) => {
         res.json(error.details)
     } else {
         const {title, desc, need, price, userID} = req.body
-        try {
             const order = await createOrderFromDb(title, desc, need, price, userID)
             res.send('Order succesfully created!')
-        } catch(err) {
-            res.send(err)
-    }
   }
 }
 
 export const deleteOrder = async (req, res) => {
-    const orderId = req.params.id
     try {
-        const order = await deleteOrderFromDb(orderId)
+    const orderId = req.params.id
+    const userId = req.body.userId
+        const order = await deleteOrderFromDb(orderId, userId)
         res.send('Order succesfully deleted!')
-    } catch(err) {
-        res.send(err)
+    } catch(err){
+        res.send(err.message)
     }
 }
 
@@ -50,13 +40,14 @@ export const updateOrder = async (req, res) => {
     if(error) {
         res.json(error.details)
     } else {
+        try {
     const orderId = req.params.id
+    const userId = req.query.userId
     const {title, desc, need, price, userID} = req.body
-    try { 
-        const order = await updateOrderFromDb(orderId, title, desc, need, price, userID )
+        const order = await updateOrderFromDb(orderId, userId, title, desc, need, price, userID)
         res.send('Order succesfully updated!')
-    } catch(err) {
-        res.send(err)
-    }
+        } catch(err){
+            res.send(err.message)
+        }
    }
 }
